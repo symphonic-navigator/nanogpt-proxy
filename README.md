@@ -223,7 +223,7 @@ that you can run via pnpm --filter <name> <script>.
 
 | Name                     | Role                |
 |--------------------------|---------------------|
-| symphony-navigator       | Developer           |
+| symphonic-navigator      | Developer           |
 | diaphainein              | Developer           |          
 | patrickbelanger          | Developer           |   
 | lauriebeaulieu981 👠👠   | patrickbelanger' AI | 
