@@ -1,9 +1,9 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
-import { EnvironmentService } from '../environment/environment.service';
-import { CryptorService } from '../crypto/cryptor.service';
+import { EnvironmentService } from '../../../../packages/core/src/environment/environment.service';
+import { CryptorService } from '../../../../packages/core/src/crypto/cryptor.service';
 import { Request, Response } from 'express';
-import { UserRepository } from '../user/user.repository';
+import { UserRepository } from '../../../../packages/core/src/user/user.repository';
 
 @Injectable()
 export class ForwarderService {

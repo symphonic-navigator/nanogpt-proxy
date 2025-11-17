@@ -13,9 +13,17 @@
     "format": "turbo format"
   },
   "devDependencies": {
-    "turbo": "^2.6.1",
-    "typescript": "^5.9.3",
     "eslint": "^9.39.1",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "turbo": "^2.6.1",
+    "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "core": "link:../../.local/share/pnpm/global/5/node_modules/@nanogpt-monorepo/core"
+    }
+  },
+  "dependencies": {
+    "core": "link:../../.local/share/pnpm/global/5/node_modules/@nanogpt-monorepo/core"
   }
 }

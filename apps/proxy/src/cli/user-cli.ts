@@ -2,8 +2,8 @@
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
-import { CryptorService } from '../crypto/cryptor.service';
-import { UserRepository } from '../user/user.repository';
+import { CryptorService } from '../../../../packages/core/src/crypto/cryptor.service';
+import { UserRepository } from '../../../../packages/core/src/user/user.repository';
 
 async function bootstrap() {
     const app = await NestFactory.createApplicationContext(AppModule, {
