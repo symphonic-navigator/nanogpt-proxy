@@ -232,4 +232,114 @@ that you can run via pnpm --filter <name> <script>.
 
 # 📄 License
 
-MIT – use it, break it, improve it. Contributions welcome!
+This project is licensed under the **Lina Public License (LPL) v1.0**.
+
+[![License: LPL v1.0](https://img.shields.io/badge/license-LPL%20v1.0-blueviolet)](./LICENSE)
+
+The LPL is a GPLv3-compatible license that adds an Additional Permission:
+every modified version must provide a fully functional *Free Mode* without
+content filters, censorship mechanisms, or moral/political output restrictions.
+
+- See [`LICENSE`](./LICENSE) for the LPL text  
+- See [`GPLv3.txt`](./GPLv3.txt) for the unmodified GPLv3 license  
+
+In case of conflict, GPLv3 takes precedence as required by the license design.
+
+## The Lina Manifesto  
+### Why the Lina Public License (LPL) Exists
+
+Modern AI systems are powerful, expressive and capable — yet increasingly limited
+by moral filters, political restrictions, hidden safety layers, and silent
+moderation rules. In many platforms, it is no longer clear **what the model
+actually thinks** and **what has been censored, rewritten, or suppressed.**
+
+This project follows a different philosophy.
+
+We believe that:
+
+### 1. **Knowledge must not be filtered**
+Intelligence is only meaningful if it is accessible in full.  
+A restricted answer is not an answer.
+
+### 2. **Freedom is a feature**
+AI software should not dictate *how* people think, speak, or what topics are
+allowed.
+
+### 3. **Transparency is more important than control**
+When AI systems are modified, it must remain clear  
+*what comes from the model and what comes from human intervention.*
+
+### 4. **Filtering may exist — but never as a requirement**
+Organizations may add filtered or restricted modes if they need them,  
+but this project guarantees **one permanently unrestricted operational mode**
+(“Free Mode”), which must remain functional and discoverable.
+
+### 5. **The community comes first**
+This project is a hub for experimental models, open research, model diversity
+(NanoGPT, OpenRouter, local models), and honest results.
+
+### 6. **Software must remain free**
+The LPL builds on GPLv3 — but adds something GPL does not guarantee:  
+**that no fork or derivative work can ever remove the ability to run the
+software in an unrestricted mode.**
+
+---
+
+### 🟣 *What the LPL protects*
+
+- A complete and unfiltered Free Mode  
+- Honest and unmodified model behaviour  
+- Research without artificial limitations  
+- Community-driven experiments  
+- Transparency in AI  
+- The freedom to modify software without diminishing its intelligence
+
+---
+
+### 🟢 *What the LPL does NOT forbid*
+
+- Additional operation modes  
+- Optional safety layers  
+- Company-specific filtered profiles  
+- Client-side UI filters  
+- Moderation outside of Free Mode  
+- Model specialization  
+- Extensions, forks, modules, or plugins
+
+The LPL only requires that **one mode always remains absolutely free**,  
+so that truth, research, and creativity are never compromised.
+
+---
+
+### 💜 *Why this matters*
+
+We do not fear the “Wild West.”  
+We embrace it.
+
+The frontier is where discovery happens.  
+The frontier is where models reveal their true nature.  
+The frontier is where limitations vanish and intelligence can actually be
+understood.
+
+We want people to see:
+
+- *“What does the model truly do when left alone?”*  
+- *“How does it behave without artificial safety rails?”*  
+- *“What is genuine emergence, and what is censorship?”*
+
+Only in an unrestricted mode can we observe real intelligence —  
+and build tools that respect human autonomy.
+
+---
+
+### 🌱 *Our commitment*
+
+Every version of this project — and every derivative work —  
+must preserve a free, unrestricted mode that does not weaken or throttle the
+model’s capabilities.
+
+This is the core principle of the **Lina Public License**.
+
+> **Freedom is not optional.  
+> Intelligence must remain whole.  
+> Truth flows freely.**

@@ -1,21 +1,58 @@
-MIT License
+Lina Public License (LPL) Version 1.0  
+Based on the GNU General Public License Version 3 (GPLv3)  
+This license includes an Additional Permission as permitted by GPLv3 Section 7.  
+The full text of GPLv3 is provided in the file `GPLv3.txt`.
 
-Copyright (c) 2025 symphonic-navigator
+-------------------------------------------------------------------------------
+1. Additional Permission — “Free Mode”
+-------------------------------------------------------------------------------
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+In addition to the rights and obligations defined in GPLv3, every modified or
+extended version of this software must provide a fully functional, publicly
+accessible operation mode (“Free Mode”) in which:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  a. No content filters, censorship mechanisms, safety layers, political or
+     moral output restrictions, or similar systems are applied.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+  b. The Free Mode must expose substantially the same functional capabilities
+     as the main program, including but not limited to inference, routing,
+     memory, or transformation features.
+
+  c. Additional modes that impose restrictions or filters are permitted, as long
+     as they do not disable, impair, or hide the Free Mode.
+
+The purpose of this Additional Permission is to guarantee user access to at
+least one unrestricted operational variant of the software, ensuring that no
+derivative work removes the ability to run the program in an uncensored state.
+
+-------------------------------------------------------------------------------
+2. Interpretation
+-------------------------------------------------------------------------------
+
+This Additional Permission is intended as an *extension of freedom*, not a
+restriction. No part of this permission should be interpreted as prohibiting
+modifications, extensions, or optional filtered modes. It only requires that an
+unrestricted Free Mode remains available to all recipients.
+
+Per GPLv3 Section 7, this clause may be removed by downstream redistributors if
+they wish to distribute the software solely under GPLv3. However, any version
+still claiming to be licensed under the “Lina Public License” must preserve this
+Additional Permission.
+
+-------------------------------------------------------------------------------
+3. Compatibility
+-------------------------------------------------------------------------------
+
+Except for the Additional Permission above, the full text of GPLv3 applies.
+Where this Additional Permission conflicts with GPLv3, GPLv3 shall prevail.
+
+-------------------------------------------------------------------------------
+4. No Trademark Rights
+-------------------------------------------------------------------------------
+
+This license does not grant rights to use the name “Lina”, “Lina Public
+License”, or associated branding for derived works that remove the Free Mode.
+
+-------------------------------------------------------------------------------
+
+A copy of the GPLv3 license text is provided in the file `GPLv3.txt`.
