@@ -7,7 +7,7 @@ import { ForwarderModule } from './forwarder/forwarder.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ForwarderModule
+    ForwarderModule,
   ],
 })
 export class AppModule {}
