@@ -9,7 +9,7 @@ export class EnvironmentService {
         return this.config.get<string>('DB_ENCRYPTION_KEY')!;
     }
 
-    get port(): number {
-        return this.config.get<number>('PORT', 3000);
+    get proxyPort(): number {
+        return this.config.get<number>('PROXY_PORT', 3000);
     }
 }

@@ -4,9 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  core: link:../../.local/share/pnpm/global/5/node_modules/@nanogpt-monorepo/core
+
 importers:
 
   .:
+    dependencies:
+      core:
+        specifier: link:../../.local/share/pnpm/global/5/node_modules/@nanogpt-monorepo/core
+        version: link:../../.local/share/pnpm/global/5/node_modules/@nanogpt-monorepo/core
     devDependencies:
       eslint:
         specifier: ^9.39.1
