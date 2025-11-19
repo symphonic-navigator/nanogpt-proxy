@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { EnvironmentService } from '@nanogpt-monorepo/core';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3001);
+  const environmentService = app.get(EnvironmentService);
+
+  await app.listen(environmentService.proxyPort);
 }
 bootstrap();
