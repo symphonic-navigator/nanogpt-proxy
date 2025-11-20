@@ -1,10 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from '../redis/redis.service';
-
-export interface UserEntity {
-  email: string;
-  api_key: string;
-}
+import { UserEntity } from '../entities/user-entity';
 
 const PREFIX = 'usermapping:nanogpt:simple';
 
@@ -15,7 +11,9 @@ export class UserRepository {
   async getUser(email: string): Promise<UserEntity | null> {
     const key = this.keyFor(email);
     const data = await this.redis.getHash(key);
-    if (!data) return null;
+    if (!data) {
+      return null;
+    }
 
     return {
       email: data.email,
@@ -38,19 +36,27 @@ export class UserRepository {
 
   async getAllUsers(): Promise<UserEntity[]> {
     const keys = await this.redis.scan(`${PREFIX}:*`);
-    const out: UserEntity[] = [];
 
-    for (const key of keys) {
-      const data = await this.redis.getHash(key);
-      if (data) {
-        out.push({
-          email: data.email,
-          api_key: data.api_key,
-        });
-      }
+    if (keys.length === 0) {
+      return [];
     }
 
-    return out;
+    const results = await Promise.all(
+      keys.map(async (key) => {
+        const data = await this.redis.getHash(key);
+
+        if (!data) {
+          return null;
+        }
+
+        return {
+          email: data.email,
+          api_key: data.api_key,
+        } as UserEntity;
+      }),
+    );
+
+    return results.filter((u): u is UserEntity => u !== null);
   }
 
   private keyFor(email: string) {
