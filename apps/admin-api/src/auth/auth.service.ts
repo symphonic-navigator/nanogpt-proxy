@@ -1,8 +1,8 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { CryptorService, EnvironmentService, UserRepository } from '@nanogpt-monorepo/core';
-import { AdminLoginDto } from '../dtos/admin-dto';
-import { AdminUser } from '@nanogpt-monorepo/core/dist/models/admin-user';
+import { EnvironmentService, UserRepository } from '@nanogpt-monorepo/core';
 import { SecurityService } from '../security/security.service';
+import { UserEntity } from '@nanogpt-monorepo/core/dist/entities/user-entity';
+import { LoginDto } from '../dtos/login-dto';
 
 @Injectable()
 export class AuthService {
@@ -20,37 +20,39 @@ export class AuthService {
 
     if (!email || !password) {
       this.logger.warn(
-        'ADMIN_EMAIL / ADMIN_PASSWORD non configurés – aucun admin bootstrap ne sera créé.',
+        "ADMIN_EMAIL / ADMIN_PASSWORD no configured – admin bootstrap won't be created.",
       );
       return;
     }
 
-    const existing = (await this.users.getUser(email)) as AdminUser | null;
+    const existing = (await this.users.getUser(email)) as UserEntity | null;
     if (existing && existing.role === 'ADMIN') {
       return;
     }
 
-    const passwordHash = this.security.hashPassword(password);
+    const passwordHash = await this.security.hashPassword(password);
 
-    await this.users.createAdmin?.({
-      email,
-      passwordHash,
+    await this.users.saveUser?.({
+      enabled: true,
+      email: email,
+      password: passwordHash,
+      api_key: '',
       role: 'ADMIN',
-    } as AdminUser);
+    } as UserEntity);
 
-    this.logger.log(`Admin bootstrap créé pour ${email}`);
+    this.logger.log(`Admin bootstrap created for ${email}`);
   }
 
-  async login(dto: AdminLoginDto) {
+  async login(dto: LoginDto) {
     await this.ensureBootstrapAdmin();
 
-    const user = (await this.users.getUser(dto.email)) as AdminUser | null;
+    const user = (await this.users.getUser(dto.email)) as UserEntity | null;
 
     if (!user || user.role !== 'ADMIN') {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const ok = await this.security.verifyPassword(dto.password, user.passwordHash);
+    const ok = await this.security.verifyPassword(dto.password, user.password);
     if (!ok) {
       throw new UnauthorizedException('Invalid credentials');
     }

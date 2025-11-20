@@ -23,7 +23,7 @@ async function bootstrap() {
         process.exit(1);
       }
       const encrypted = cryptor.encrypt(apiKey);
-      await users.saveUser({ email, api_key: encrypted });
+      await users.upsertApiKey(email, encrypted);
       console.log(`✅ Added/Updated user: ${email}`);
       break;
     }
@@ -62,10 +62,7 @@ async function bootstrap() {
 
       const parsed = JSON.parse(raw);
       for (const u of parsed) {
-        await users.saveUser({
-          email: u.email,
-          api_key: cryptor.encrypt(u.api_key),
-        });
+        await users.upsertApiKey(u.email, cryptor.encrypt(u.api_key));
       }
 
       console.log(`✅ Imported ${parsed.length} users`);
