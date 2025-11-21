@@ -7,3 +7,13 @@ Content-Type: application/json
   "password": "so-secure!"
 }
 ###
+
+### POST login
+POST http://{{host}}:{{port}}/v1/auth/login/
+Content-Type: application/json
+
+{
+  "email": "bozo@the-clown.net",
+  "password": "so-secure!"
+}
+###

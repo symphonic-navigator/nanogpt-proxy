@@ -20,25 +20,27 @@ export class AuthService {
 
     if (!email || !password) {
       this.logger.warn(
-        "ADMIN_EMAIL / ADMIN_PASSWORD no configured – admin bootstrap won't be created.",
+        "ADMIN_EMAIL / ADMIN_PASSWORD not configured – admin bootstrap won't be created.",
       );
       return;
     }
 
-    const existing = (await this.users.getUser(email)) as UserEntity | null;
+    const existing = await this.users.getUser(email);
     if (existing && existing.role === 'ADMIN') {
       return;
     }
 
     const passwordHash = await this.security.hashPassword(password);
 
-    await this.users.saveUser?.({
+    const adminUser: UserEntity = {
       enabled: true,
-      email: email,
+      email,
       password: passwordHash,
       api_key: '',
       role: 'ADMIN',
-    } as UserEntity);
+    };
+
+    await this.users.saveUser(adminUser);
 
     this.logger.log(`Admin bootstrap created for ${email}`);
   }
@@ -46,7 +48,7 @@ export class AuthService {
   async login(dto: LoginDto) {
     await this.ensureBootstrapAdmin();
 
-    const user = (await this.users.getUser(dto.email)) as UserEntity | null;
+    const user = await this.users.getUser(dto.email);
 
     if (!user || user.role !== 'ADMIN') {
       throw new UnauthorizedException('Invalid credentials');
