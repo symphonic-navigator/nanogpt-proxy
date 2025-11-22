@@ -23,6 +23,8 @@ ADMIN_PASSWORD=<password>
 DB_ENCRYPTION_KEY=<copy db encryption key here>
 JWT_SECRET=<copy hmac secret - base 64 here>
 JWT_EXPIRES_IN=5m
+JWT_REFRESH_EXPIRES_IN=7d
+JWT_BLACKLIST_TTL_SECONDS=86400
 ```
 
 Remark: For production, password should be store in a Vault (like Hashicorp Vault OSS and injected while building the
