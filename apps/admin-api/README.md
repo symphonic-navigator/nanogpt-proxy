@@ -1,0 +1,29 @@
+# 🧠 NanoGPT admin-api
+
+## 🌮 Setup
+
+1. (If not done already) Generate DB_ENCRYPTION_KEY
+
+```bash
+openssl rand -hex 32
+```
+
+Note: This key must be identical in both **admin-api** and **proxy**
+
+2. Generate HMAC secret
+
+```bash
+openssl rand -base64 64
+```
+
+2. For local development, create .env file with the following keys/values
+```
+ADMIN_EMAIL=<adminstrator email>
+ADMIN_PASSWORD=<password>
+DB_ENCRYPTION_KEY=<copy db encryption key here>
+JWT_SECRET=<copy hmac secret - base 64 here>
+JWT_EXPIRES_IN=5m
+```
+
+Remark: For production, password should be store in a Vault (like Hashicorp Vault OSS and injected while building the
+docker image for security reason), and passed through the ADMIN_EMAIL and ADMIN_PASSWORD environment variable.

@@ -59,7 +59,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    const jwt = this.security.createToken(user);
+
     return {
+      accessToken: jwt,
       email: user.email,
       role: user.role,
     };

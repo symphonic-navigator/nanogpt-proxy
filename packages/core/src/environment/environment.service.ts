@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import type { Secret, SignOptions } from 'jsonwebtoken';
 
 @Injectable()
 export class EnvironmentService {
@@ -13,9 +14,9 @@ export class EnvironmentService {
     return value;
   }
 
-  private getOrDefault<T>(key: string, defaultValue: T): T {
+  private getOptional<T = string>(key: string, defaultValue?: T): T {
     const value = this.config.get<T>(key);
-    return value === undefined || value === null ? defaultValue : value;
+    return (value ?? defaultValue) as T;
   }
 
   get adminEmail(): string {
@@ -30,7 +31,15 @@ export class EnvironmentService {
     return this.getRequired<string>('DB_ENCRYPTION_KEY');
   }
 
+  get jwtSecret(): Secret {
+    return this.getRequired<string>('JWT_SECRET');
+  }
+
+  get jwtExpiresIn(): SignOptions['expiresIn'] {
+    return this.getRequired<string>('JWT_EXPIRES_IN') as SignOptions['expiresIn'];
+  }
+
   get proxyPort(): number {
-    return this.getOrDefault<number>('PROXY_PORT', 3000);
+    return this.getOptional<number>('PROXY_PORT', 3000);
   }
 }
