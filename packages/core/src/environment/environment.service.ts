@@ -31,12 +31,24 @@ export class EnvironmentService {
     return this.getRequired<string>('DB_ENCRYPTION_KEY');
   }
 
-  get jwtSecret(): Secret {
-    return this.getRequired<string>('JWT_SECRET');
+  get jwtBlacklistTtlSeconds(): number {
+    return Number(this.config.get<number>('JWT_BLACKLIST_TTL_SECONDS', 86400));
   }
 
   get jwtExpiresIn(): SignOptions['expiresIn'] {
     return this.getRequired<string>('JWT_EXPIRES_IN') as SignOptions['expiresIn'];
+  }
+
+  get jwtRefreshExpiresIn(): SignOptions['expiresIn'] {
+    return this.getRequired('JWT_REFRESH_EXPIRES_IN') as SignOptions['expiresIn'];
+  }
+
+  get jwtRefreshSecret(): Secret {
+    return this.getRequired<string>('JWT_REFRESH_SECRET');
+  }
+
+  get jwtSecret(): Secret {
+    return this.getRequired<string>('JWT_SECRET');
   }
 
   get proxyPort(): number {

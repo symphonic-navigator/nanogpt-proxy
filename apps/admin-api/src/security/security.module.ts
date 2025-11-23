@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SecurityService } from './security.service';
-import { EnvironmentModule } from '@nanogpt-monorepo/core';
+import { EnvironmentModule, RedisModule } from '@nanogpt-monorepo/core';
+import { TokenService } from './token.service';
 
 @Module({
-  imports: [EnvironmentModule],
-  providers: [SecurityService],
-  exports: [SecurityService],
+  imports: [EnvironmentModule, RedisModule],
+  providers: [SecurityService, TokenService],
+  exports: [SecurityService, TokenService],
 })
 export class SecurityModule {}

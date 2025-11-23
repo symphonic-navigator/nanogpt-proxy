@@ -3,6 +3,8 @@ import { EnvironmentService, UserRepository } from '@nanogpt-monorepo/core';
 import { SecurityService } from '../security/security.service';
 import { UserEntity } from '@nanogpt-monorepo/core/dist/entities/user-entity';
 import { LoginDto } from '../dtos/login-dto';
+import jwt from 'jsonwebtoken';
+import { TokenService } from '../security/token.service';
 
 @Injectable()
 export class AuthService {
@@ -11,6 +13,7 @@ export class AuthService {
   constructor(
     private readonly users: UserRepository,
     private readonly security: SecurityService,
+    private readonly tokens: TokenService,
     private readonly env: EnvironmentService,
   ) {}
 
@@ -59,12 +62,39 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const jwt = this.security.createToken(user);
+    const { accessToken, refreshToken } = await this.tokens.rotateTokens(user);
 
     return {
-      accessToken: jwt,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
       email: user.email,
       role: user.role,
     };
+  }
+
+  async refresh(refreshToken: string) {
+    const payload = await this.tokens.verifyRefreshToken(refreshToken);
+    const user = await this.users.getUser(payload.sub);
+
+    if (!user || !user.enabled) {
+      throw new UnauthorizedException('User not found or disabled');
+    }
+
+    return await this.tokens.rotateTokens(user);
+  }
+
+  async logout(accessToken: string) {
+    const decoded = jwt.decode(accessToken) as {
+      sub?: string;
+      jti?: string;
+      exp?: number;
+    } | null;
+
+    if (!decoded?.sub || !decoded?.jti) {
+      return;
+    }
+
+    await this.tokens.blacklistAccessToken(decoded.jti, decoded.exp);
+    await this.tokens.revokeRefreshForUser(decoded.sub);
   }
 }
