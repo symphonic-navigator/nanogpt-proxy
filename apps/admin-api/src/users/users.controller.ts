@@ -10,9 +10,9 @@ import { Roles } from '../decorators/roles.decorator';
 export class UsersController {
   constructor(private readonly users: UsersService) {}
 
-  @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
+  @Post()
   async createUser(@Body() dto: CreateUserDto): Promise<void> {
     return await this.users.createUser(dto);
   }
