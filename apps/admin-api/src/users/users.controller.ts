@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { CreateUserDto } from '../dtos/create-user-dto';
@@ -22,5 +22,19 @@ export class UsersController {
   @Get()
   async listUsers() {
     return this.users.getAll();
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN', 'USER')
+  @Put()
+  async updateUser(@Body() dto: CreateUserDto): Promise<void> {
+    return await this.users.updateUser(dto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Delete()
+  async deleteUser(@Body() dto: CreateUserDto): Promise<void> {
+    return await this.users.deleteUser(dto);
   }
 }

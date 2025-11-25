@@ -23,6 +23,28 @@ Authorization: Bearer {{token}}
 }
 ###
 
+### POST users (happy path)
+POST http://localhost:3000/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "laurie@sss.io",
+  "password": "so-secure!"
+}
+###
+
+### DELETE users
+DELETE http://localhost:3000/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "laurie@sss.io",
+  "password": "so-secure!"
+}
+###
+
 ### GET users (secured)
 GET http://localhost:3000/v1/users
 Authorization: Bearer {{token}}
