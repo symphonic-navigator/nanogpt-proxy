@@ -1,4 +1,5 @@
 export class CreateUserDto {
   email: string;
-  apiKey: string;
+  password: string;
+  api_key: string;
 }

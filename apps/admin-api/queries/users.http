@@ -12,6 +12,16 @@ Content-Type: application/json
 %}
 ###
 
+### POST users (already exists)
+POST http://localhost:3000/v1/users
+Authorization: Bearer {{token}}
+
+{
+  "email": "fish@stream.net",
+  "password": "so-secure!"
+}
+###
+
 ### GET users (secured)
 GET http://localhost:3000/v1/users
 Authorization: Bearer {{token}}
