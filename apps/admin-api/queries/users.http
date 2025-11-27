@@ -45,6 +45,31 @@ Authorization: Bearer {{token}}
 }
 ###
 
+### PUT users (happy path)
+PUT http://localhost:3000/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "laurie@sss.io",
+  "password": "so-secure!",
+  "api_key": "f84c1d96-936d-4649-a6ee-cf231f4392c2",
+  "role": "USER"
+}
+###
+
+### PUT users (can't downgrade)
+PUT http://localhost:3000/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "fish@stream.net",
+  "password": "so-secure!",
+  "role": "USER"
+}
+###
+
 ### GET users (secured)
 GET http://localhost:3000/v1/users
 Authorization: Bearer {{token}}

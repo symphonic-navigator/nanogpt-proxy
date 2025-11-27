@@ -2,9 +2,9 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { EnvironmentService, UserRepository } from '@nanogpt-monorepo/core';
 import { SecurityService } from '../security/security.service';
 import { UserEntity } from '@nanogpt-monorepo/core/dist/entities/user-entity';
-import { LoginDto } from '../dtos/login-dto';
-import jwt from 'jsonwebtoken';
+import { LoginDto } from '../dtos/login.dto';
 import { TokenService } from '../security/token.service';
+import jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {

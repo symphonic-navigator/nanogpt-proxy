@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { EnvironmentService, RedisService } from '@nanogpt-monorepo/core';
@@ -32,7 +32,7 @@ export class TokenService {
   async verifyAccessToken(token: string): Promise<JwtAccessTokenPayload | null> {
     const payload = jwt.verify(token, this.env.jwtSecret) as JwtAccessTokenPayload;
     if (payload.type !== JwtType.ACCESS) {
-      throw new Error('Invalid token type');
+      throw new BadRequestException('Invalid token type');
     }
     return payload;
   }
@@ -59,14 +59,14 @@ export class TokenService {
   async verifyRefreshToken(token: string): Promise<JwtRefreshTokenPayload> {
     const payload = jwt.verify(token, this.env.jwtRefreshSecret) as JwtRefreshTokenPayload;
     if (payload.type !== JwtType.REFRESH) {
-      throw new Error('Invalid token type');
+      throw new BadRequestException('Invalid token type');
     }
 
     const key = this.refreshKeyFor(payload.sub);
     const stored = await this.redis.get(key);
 
     if (!stored || stored !== token) {
-      throw new Error('Refresh token revoked or not found');
+      throw new BadRequestException('Refresh token revoked or not found');
     }
 
     return payload;

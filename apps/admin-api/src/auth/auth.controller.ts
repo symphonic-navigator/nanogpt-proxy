@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from '../dtos/login-dto';
+import { LoginDto } from '../dtos/login.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { AccessToken } from '../decorators/access-token.decorator';
 import { RefreshToken } from '../decorators/refresh-token.decorator';
