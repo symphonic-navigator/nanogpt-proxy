@@ -58,6 +58,19 @@ Authorization: Bearer {{token}}
 }
 ###
 
+### PUT users (happy path)
+PUT http://localhost:3000/v1/users
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "email": "fish@stream.net",
+  "password": "so-secure!",
+  "api_key": "670184ea-346d-4ede-a49e-4e52885aa7c3",
+  "role": "ADMIN"
+}
+###
+
 ### PUT users (can't downgrade)
 PUT http://localhost:3000/v1/users
 Content-Type: application/json

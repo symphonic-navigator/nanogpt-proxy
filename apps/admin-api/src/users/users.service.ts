@@ -57,7 +57,7 @@ export class UsersService {
       throw new BadRequestException("Can't update user");
     }
 
-    if (await this.isAdmin(exists, dto)) {
+    if ((await this.isAdmin(exists, dto)) && dto.role !== 'ADMIN') {
       throw new BadRequestException(`Can't downgrade user role`);
     }
 
