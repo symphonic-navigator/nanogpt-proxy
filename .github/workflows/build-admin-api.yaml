@@ -54,6 +54,9 @@ jobs:
       #- name: Lint admin-api
         #run: pnpm lint --filter "@nanogpt-monorepo/admin-api"
 
+      - name: Build core
+        run: pnpm build --filter "@nanogpt-monorepo/core"
+
       - name: Build admin-api
         run: pnpm build --filter "@nanogpt-monorepo/admin-api"
 
