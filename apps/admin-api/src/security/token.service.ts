@@ -7,7 +7,7 @@ import { JwtAccessTokenPayload } from '@nanogpt-monorepo/core/dist/types/jwt-acc
 import { JwtType } from '@nanogpt-monorepo/core/dist/enums/jwt-type';
 import { JwtRefreshTokenPayload } from '@nanogpt-monorepo/core/dist/types/jwt-refresh-token-payload';
 
-const PREFIX = 'jwt:nanogpt:';
+const PREFIX = 'jwt:nanogpt';
 
 @Injectable()
 export class TokenService {
