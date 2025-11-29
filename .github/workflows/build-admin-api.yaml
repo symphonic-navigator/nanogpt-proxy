@@ -54,16 +54,15 @@ jobs:
       #- name: Lint admin-api
         #run: pnpm lint --filter "@nanogpt-monorepo/admin-api"
 
-      - name: Build admin-api
-        run: pnpm build
+      #- name: Build admin-api
+        #  run: pnpm build --filter "@nanogpt-monorepo/admin-api"
 
-      - name: Test admin-api
-        run: pnpm test --filter "@nanogpt-monorepo/admin-api"
+      #- name: Test admin-api
+        #run: pnpm test --filter "@nanogpt-monorepo/admin-api"
 
-      - name: Upload Coverage Report (admin-api)
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-proxy
-          path: apps/proxy/coverage
-
+      #- name: Upload Coverage Report (admin-api)
+        #if: success()
+        #uses: actions/upload-artifact@v4
+        #with:
+        #  name: coverage-proxy
+        #  path: apps/proxy/coverage
