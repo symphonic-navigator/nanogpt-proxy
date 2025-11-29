@@ -30,7 +30,6 @@ describe('TokenService', () => {
       set: jest.fn(),
       get: jest.fn(),
       del: jest.fn(),
-      // autres méthodes inutiles ici
     } as unknown as jest.Mocked<RedisService>;
 
     env = {
@@ -52,12 +51,8 @@ describe('TokenService', () => {
     service = module.get(TokenService);
   });
 
-  it('createAccessToken - génère un token avec les bons champs', async () => {
-    const token = await service.createAccessToken({
-      email: user.email,
-      role: user.role,
-    });
-
+  it('createAccessToken - should generate a token with correct fields', async () => {
+    const token = service.createAccessToken({ email: user.email, role: user.role });
     const decoded = jwt.verify(token, env.jwtSecret) as any;
 
     expect(decoded.sub).toBe(user.email);
@@ -66,72 +61,49 @@ describe('TokenService', () => {
     expect(typeof decoded.jti).toBe('string');
   });
 
-  it('verifyAccessToken - retourne le payload quand valide', async () => {
-    const token = await service.createAccessToken({
-      email: user.email,
-      role: user.role,
-    });
-
-    const payload = await service.verifyAccessToken(token);
+  it('verifyAccessToken - should return payload when token is valid', async () => {
+    const token = service.createAccessToken({ email: user.email, role: user.role });
+    const payload = service.verifyAccessToken(token);
 
     expect(payload).not.toBeNull();
     expect(payload?.sub).toBe(user.email);
     expect(payload?.type).toBe(JwtType.ACCESS);
   });
 
-  /*
-  it('verifyAccessToken - lève BadRequest si type ≠ ACCESS', async () => {
-    const badToken = jwt.sign(
-      {
-        sub: user.email,
-        type: JwtType.REFRESH,
-      },
-      env.jwtSecret,
-    );
-
-    await expect(service.verifyAccessToken(badToken)).rejects.toBeInstanceOf(BadRequestException);
-  });
-   */
-
-  it('createRefreshToken - stocke le token en Redis avec TTL', async () => {
+  it('createRefreshToken - should store the token in Redis with TTL', async () => {
     redis.set.mockResolvedValueOnce(undefined);
-
     const token = await service.createRefreshToken(user);
 
     expect(typeof token).toBe('string');
     expect(redis.set).toHaveBeenCalledTimes(1);
-
     const [key, storedToken, ttl] = redis.set.mock.calls[0];
-
     expect(key).toContain('jwt:nanogpt:refresh:');
     expect(storedToken).toBe(token);
     expect(ttl).toBeGreaterThan(0);
   });
 
-  it('verifyRefreshToken - retourne le payload si token valide + match Redis', async () => {
+  it('verifyRefreshToken - should return payload if token is valid and matches Redis', async () => {
     const token = await service.createRefreshToken(user);
     redis.get.mockResolvedValueOnce(token);
 
     const payload = await service.verifyRefreshToken(token);
-
     expect(payload.sub).toBe(user.email);
     expect(payload.type).toBe(JwtType.REFRESH);
   });
 
-  it('verifyRefreshToken - lève BadRequest si type ≠ REFRESH', async () => {
+  it('verifyRefreshToken - should throw BadRequestException if type is not REFRESH', async () => {
     const badToken = jwt.sign({ sub: user.email, type: JwtType.ACCESS }, env.jwtRefreshSecret);
-
     await expect(service.verifyRefreshToken(badToken)).rejects.toBeInstanceOf(BadRequestException);
   });
 
-  it('verifyRefreshToken - lève BadRequest si token non trouvé ou mismatch', async () => {
+  it('verifyRefreshToken - should throw BadRequestException if token not found or mismatch in Redis', async () => {
     const token = await service.createRefreshToken(user);
     redis.get.mockResolvedValueOnce(null);
 
     await expect(service.verifyRefreshToken(token)).rejects.toBeInstanceOf(BadRequestException);
   });
 
-  it('rotateTokens - retourne access + refresh tokens', async () => {
+  it('rotateTokens - should return both access and refresh tokens', async () => {
     const spyCreateAccess = jest.spyOn(service, 'createAccessToken');
     const spyCreateRefresh = jest.spyOn(service, 'createRefreshToken');
 
@@ -143,9 +115,8 @@ describe('TokenService', () => {
     expect(spyCreateRefresh).toHaveBeenCalled();
   });
 
-  it('blacklistAccessToken - met le jti en blacklist', async () => {
+  it('blacklistAccessToken - should add jti to blacklist in Redis', async () => {
     redis.set.mockResolvedValueOnce(undefined);
-
     await service.blacklistAccessToken('jti-123', undefined);
 
     expect(redis.set).toHaveBeenCalledWith(
@@ -155,26 +126,23 @@ describe('TokenService', () => {
     );
   });
 
-  it('isBlacklisted - retourne true si Redis contient "1"', async () => {
+  it('isBlacklisted - should return true if Redis contains "1"', async () => {
     redis.get.mockResolvedValueOnce('1');
-
     const result = await service.isBlacklisted('jti-x');
 
     expect(redis.get).toHaveBeenCalled();
     expect(result).toBe(true);
   });
 
-  it('isBlacklisted - retourne false sinon', async () => {
+  it('isBlacklisted - should return false if key is missing or not "1"', async () => {
     redis.get.mockResolvedValueOnce(null);
-
     const result = await service.isBlacklisted('jti-x');
 
     expect(result).toBe(false);
   });
 
-  it('revokeRefreshForUser - supprime la clé de refresh', async () => {
+  it('revokeRefreshForUser - should delete refresh key from Redis', async () => {
     redis.del.mockResolvedValueOnce(undefined);
-
     await service.revokeRefreshForUser(user.email);
 
     expect(redis.del).toHaveBeenCalledWith(expect.stringContaining('jwt:nanogpt:refresh:'));
