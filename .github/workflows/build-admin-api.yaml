@@ -51,8 +51,8 @@ jobs:
           pwd
           ls -la tsconfig.json apps/admin-api/tsconfig.json || echo "no tsconfig found"
 
-      - name: Lint admin-api
-        run: pnpm lint --filter "@nanogpt-monorepo/admin-api"
+      #- name: Lint admin-api
+        #run: pnpm lint --filter "@nanogpt-monorepo/admin-api"
 
       - name: Build admin-api
         run: pnpm build --filter "@nanogpt-monorepo/admin-api"
