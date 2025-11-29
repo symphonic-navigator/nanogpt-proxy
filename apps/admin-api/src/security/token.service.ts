@@ -16,7 +16,7 @@ export class TokenService {
     private readonly redis: RedisService,
   ) {}
 
-  async createAccessToken(user: Pick<UserEntity, 'email' | 'role'>): Promise<string> {
+  createAccessToken(user: Pick<UserEntity, 'email' | 'role'>): string {
     const payload: JwtAccessTokenPayload = {
       sub: user.email,
       r: [user.role],
@@ -29,11 +29,13 @@ export class TokenService {
     });
   }
 
-  async verifyAccessToken(token: string): Promise<JwtAccessTokenPayload | null> {
+  verifyAccessToken(token: string): JwtAccessTokenPayload {
     const payload = jwt.verify(token, this.env.jwtSecret) as JwtAccessTokenPayload;
+
     if (payload.type !== JwtType.ACCESS) {
       throw new BadRequestException('Invalid token type');
     }
+
     return payload;
   }
 
@@ -73,7 +75,7 @@ export class TokenService {
   }
 
   async rotateTokens(user: UserEntity): Promise<{ accessToken: string; refreshToken: string }> {
-    const accessToken = await this.createAccessToken(user);
+    const accessToken = this.createAccessToken(user);
     const refreshToken = await this.createRefreshToken(user);
     return { accessToken, refreshToken };
   }

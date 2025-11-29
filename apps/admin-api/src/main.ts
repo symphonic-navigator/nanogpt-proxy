@@ -8,4 +8,5 @@ async function bootstrap() {
 
   await app.listen(environmentService.proxyPort);
 }
-bootstrap();
+
+void bootstrap();

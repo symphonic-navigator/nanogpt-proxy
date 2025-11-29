@@ -43,7 +43,7 @@ export class UsersService {
       throw new BadRequestException(`Can't remove user`);
     }
 
-    if (await this.isAdmin(exists, dto)) {
+    if (this.isAdmin(exists, dto.email)) {
       throw new BadRequestException(`Can't remove user`);
     }
 
@@ -57,7 +57,7 @@ export class UsersService {
       throw new BadRequestException("Can't update user");
     }
 
-    if ((await this.isAdmin(exists, dto)) && dto.role !== 'ADMIN') {
+    if (this.isAdmin(exists, dto.email) && dto.role !== 'ADMIN') {
       throw new BadRequestException(`Can't downgrade user role`);
     }
 
@@ -91,10 +91,7 @@ export class UsersService {
     return this.users.getAllUsers();
   }
 
-  private async isAdmin(
-    userEntity: UserEntity,
-    dto: CreateUserDto | DeleteUserDto,
-  ): Promise<boolean> {
-    return userEntity.role === 'ADMIN' && this.environment.adminEmail === dto.email;
+  private isAdmin(userEntity: UserEntity, email: string): boolean {
+    return userEntity.role === 'ADMIN' && this.environment.adminEmail === email;
   }
 }

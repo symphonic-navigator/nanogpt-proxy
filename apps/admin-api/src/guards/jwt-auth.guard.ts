@@ -1,13 +1,14 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Request } from 'express';
 import { TokenService } from '../security/token.service';
+import { AuthenticatedRequest } from '../types/authenticated-request';
+import type { Role } from '../decorators/roles.decorator';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   constructor(private readonly tokenService: TokenService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const req = context.switchToHttp().getRequest<Request>();
+    const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const auth = req.headers['authorization'];
 
     if (!auth || !auth.startsWith('Bearer ')) {
@@ -15,7 +16,7 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     const token = auth.slice('Bearer '.length).trim();
-    const payload = await this.tokenService.verifyAccessToken(token);
+    const payload = this.tokenService.verifyAccessToken(token);
 
     if (!payload) {
       throw new UnauthorizedException('Invalid or expired token');
@@ -26,9 +27,11 @@ export class JwtAuthGuard implements CanActivate {
       throw new UnauthorizedException('Token revoked');
     }
 
-    (req as any).user = {
+    const roles = payload.r as Role[];
+
+    req.user = {
       sub: payload.sub,
-      r: payload.r,
+      r: roles,
       jti: payload.jti,
     };
 
