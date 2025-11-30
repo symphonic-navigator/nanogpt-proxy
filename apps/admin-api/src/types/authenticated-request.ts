@@ -1,4 +1,3 @@
-// apps/admin-api/src/types/authenticated-request.ts
 import { Request } from 'express';
 import type { Role } from '../decorators/roles.decorator';
 
