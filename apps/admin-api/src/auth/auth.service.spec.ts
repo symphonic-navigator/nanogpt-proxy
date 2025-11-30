@@ -8,7 +8,6 @@ import { UserEntity } from '@nanogpt-monorepo/core/dist/entities/user-entity';
 import jwt from 'jsonwebtoken';
 import { LoginDto } from '../dtos/login.dto';
 
-// Helpers / mocks typed proprement
 const makeUserRepoMock = () => ({
   getUser: jest.fn<Promise<UserEntity | null>, [string]>(),
   saveUser: jest.fn<Promise<void>, [UserEntity]>(),
@@ -26,7 +25,6 @@ const makeTokenMock = () => ({
   revokeRefreshForUser: jest.fn<Promise<void>, [string]>(),
 });
 
-// On ne se casse pas la tête : mock partiel de l'env
 const makeEnvMock = () =>
   ({
     adminEmail: 'admin@example.com',
@@ -61,13 +59,8 @@ describe('AuthService', () => {
   });
 
   describe('ensureBootstrapAdmin (indirect)', () => {
-    it('crée un admin bootstrap si adminEmail/adminPassword sont configurés et que l’admin n’existe pas', async () => {
-      // getUser est appelé 2 fois dans login():
-      // 1) dans ensureBootstrapAdmin avec env.adminEmail
-      // 2) pour l’email du dto
-      userRepo.getUser
-        .mockResolvedValueOnce(null) // bootstrap: admin inexistant
-        .mockResolvedValueOnce(null); // login: aussi inexistant -> on va se rendre jusqu’à l’Unauthorized
+    it('should create bootstrap admin if adminEmail/adminPassword are set and no admin exists yet', async () => {
+      userRepo.getUser.mockResolvedValueOnce(null).mockResolvedValueOnce(null);
 
       security.hashPassword.mockResolvedValue('hashed-bootstrap');
 
@@ -88,7 +81,7 @@ describe('AuthService', () => {
       );
     });
 
-    it("ne recrée pas l'admin si un ADMIN existe déjà", async () => {
+    it('should not recreate admin if an ADMIN user already exists', async () => {
       const existingAdmin: UserEntity = {
         enabled: true,
         email: 'admin@example.com',
@@ -123,8 +116,7 @@ describe('AuthService', () => {
   });
 
   describe('login', () => {
-    it('lance Unauthorized si user est introuvable ou pas ADMIN', async () => {
-      // bootstrap voit un admin existant
+    it('should throw Unauthorized if user is not found or not an ADMIN', async () => {
       const bootstrapAdmin: UserEntity = {
         enabled: true,
         email: 'admin@example.com',
@@ -133,9 +125,7 @@ describe('AuthService', () => {
         role: 'ADMIN',
       };
 
-      userRepo.getUser
-        .mockResolvedValueOnce(bootstrapAdmin) // ensureBootstrapAdmin
-        .mockResolvedValueOnce(null); // login pour dto -> user introuvable
+      userRepo.getUser.mockResolvedValueOnce(bootstrapAdmin).mockResolvedValueOnce(null);
 
       await expect(
         service.login({ email: 'someone@example.com', password: 'pw' } as LoginDto),
@@ -145,7 +135,7 @@ describe('AuthService', () => {
       expect(tokens.rotateTokens).not.toHaveBeenCalled();
     });
 
-    it('lance Unauthorized si le mot de passe est invalide', async () => {
+    it('should throw Unauthorized if password is invalid', async () => {
       const bootstrapAdmin: UserEntity = {
         enabled: true,
         email: 'admin@example.com',
@@ -162,9 +152,7 @@ describe('AuthService', () => {
         role: 'ADMIN',
       };
 
-      userRepo.getUser
-        .mockResolvedValueOnce(bootstrapAdmin) // bootstrap
-        .mockResolvedValueOnce(loginUser); // login
+      userRepo.getUser.mockResolvedValueOnce(bootstrapAdmin).mockResolvedValueOnce(loginUser);
 
       security.verifyPassword.mockResolvedValue(false);
 
@@ -176,7 +164,7 @@ describe('AuthService', () => {
       expect(tokens.rotateTokens).not.toHaveBeenCalled();
     });
 
-    it('retourne tokens + info user si credentials valides', async () => {
+    it('should return tokens and user info when credentials are valid', async () => {
       const bootstrapAdmin: UserEntity = {
         enabled: true,
         email: 'admin@example.com',
@@ -193,9 +181,7 @@ describe('AuthService', () => {
         role: 'ADMIN',
       };
 
-      userRepo.getUser
-        .mockResolvedValueOnce(bootstrapAdmin) // bootstrap
-        .mockResolvedValueOnce(loginUser); // login
+      userRepo.getUser.mockResolvedValueOnce(bootstrapAdmin).mockResolvedValueOnce(loginUser);
 
       security.verifyPassword.mockResolvedValue(true);
       tokens.rotateTokens.mockResolvedValue({
@@ -219,7 +205,7 @@ describe('AuthService', () => {
   });
 
   describe('refresh', () => {
-    it('retourne de nouveaux tokens si refresh valide et user actif', async () => {
+    it('should return new tokens if refresh token is valid and user is active', async () => {
       tokens.verifyRefreshToken.mockResolvedValue({ sub: 'user@example.com' });
 
       const user: UserEntity = {
@@ -247,7 +233,7 @@ describe('AuthService', () => {
       });
     });
 
-    it('lance Unauthorized si user introuvable ou disabled', async () => {
+    it('should throw Unauthorized if user is not found or disabled', async () => {
       tokens.verifyRefreshToken.mockResolvedValue({ sub: 'ghost@example.com' });
       userRepo.getUser.mockResolvedValue(null);
 
@@ -275,7 +261,7 @@ describe('AuthService', () => {
       decodeSpy.mockReset();
     });
 
-    it('blackliste l’access token et révoque le refresh si payload valide', async () => {
+    it('should blacklist access token and revoke refresh token when payload is valid', async () => {
       decodeSpy.mockReturnValue({
         sub: 'user@example.com',
         jti: 'jti-123',
