@@ -237,7 +237,6 @@ describe('AuthService', () => {
 
       await expect(service.refresh('refresh-token')).rejects.toBeInstanceOf(UnauthorizedException);
 
-      // disabled
       const disabledUser: UserEntity = {
         enabled: false,
         email: 'user@example.com',
