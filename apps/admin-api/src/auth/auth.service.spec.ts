@@ -90,9 +90,7 @@ describe('AuthService', () => {
         role: 'ADMIN',
       };
 
-      userRepo.getUser
-        .mockResolvedValueOnce(existingAdmin) // bootstrap: admin déjà présent
-        .mockResolvedValueOnce(existingAdmin); // login: même user
+      userRepo.getUser.mockResolvedValueOnce(existingAdmin).mockResolvedValueOnce(existingAdmin);
 
       security.verifyPassword.mockResolvedValue(true);
       tokens.rotateTokens.mockResolvedValue({
