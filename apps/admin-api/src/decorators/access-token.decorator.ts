@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 
-export const AccessToken = createParamDecorator((_data: unknown, ctx: ExecutionContext): string => {
+export function extractAccessToken(ctx: ExecutionContext): string {
   const req = ctx.switchToHttp().getRequest<Request>();
   const auth = req.headers['authorization'];
 
@@ -10,4 +10,8 @@ export const AccessToken = createParamDecorator((_data: unknown, ctx: ExecutionC
   }
 
   return auth.slice('Bearer '.length).trim();
-});
+}
+
+export const AccessToken = createParamDecorator((_data: unknown, ctx: ExecutionContext): string =>
+  extractAccessToken(ctx),
+);
