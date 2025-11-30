@@ -26,7 +26,6 @@ describe('AuthController', () => {
         },
       ],
     })
-      // ⚠️ On remplace JwtAuthGuard par un mock qui autorise toujours
       .overrideGuard(JwtAuthGuard)
       .useValue({
         canActivate: jest.fn().mockResolvedValue(true),
