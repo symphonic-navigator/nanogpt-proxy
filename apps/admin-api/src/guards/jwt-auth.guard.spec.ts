@@ -11,7 +11,6 @@ describe('JwtAuthGuard', () => {
   let context: ExecutionContext;
 
   beforeEach(() => {
-    // Strict mock of TokenService
     tokenService = {
       verifyAccessToken: jest.fn(),
       isBlacklisted: jest.fn(),
