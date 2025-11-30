@@ -1,47 +1,59 @@
 import { UnauthorizedException, type ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
-import { extractAccessToken } from './access-token.decorator';
+import { extractRefreshTokenFromContext } from './refresh-token.decorator';
 
-describe('AccessToken decorator logic (extractAccessToken)', () => {
-  const createMockContext = (headers: Record<string, string | undefined>): ExecutionContext => {
-    const req = {
-      headers,
-    } as unknown as Request;
+const createMockContext = (
+  headers: Record<string, string | string[] | undefined>,
+): ExecutionContext => {
+  const req = {
+    headers,
+  } as unknown as Request;
 
-    return {
-      switchToHttp: () => ({
-        getRequest: () => req,
-      }),
-    } as unknown as ExecutionContext;
-  };
+  return {
+    switchToHttp: () => ({
+      getRequest: () => req,
+    }),
+  } as unknown as ExecutionContext;
+};
 
-  it('should extract the bearer token when header is valid', () => {
+describe('extractRefreshTokenFromContext', () => {
+  it('should return the refresh token when header is a single string', () => {
     const ctx = createMockContext({
-      authorization: 'Bearer my.jwt.token',
+      'x-refresh-token': 'my.refresh.token',
     });
 
-    const result = extractAccessToken(ctx);
+    const result = extractRefreshTokenFromContext(ctx);
 
-    expect(result).toBe('my.jwt.token');
+    expect(result).toBe('my.refresh.token');
   });
 
-  it('should throw if Authorization header is missing', () => {
+  it('should return the first non-empty token when header is an array', () => {
+    const ctx = createMockContext({
+      'x-refresh-token': ['', 'first.token', 'other.token'],
+    });
+
+    const result = extractRefreshTokenFromContext(ctx);
+
+    expect(result).toBe('first.token');
+  });
+
+  it('should throw when x-refresh-token header is missing', () => {
     const ctx = createMockContext({});
 
-    const call = () => extractAccessToken(ctx);
+    const call = () => extractRefreshTokenFromContext(ctx);
 
     expect(call).toThrow(UnauthorizedException);
-    expect(call).toThrow('Missing or invalid Authorization header');
+    expect(call).toThrow('Missing refresh token');
   });
 
-  it('should throw if Authorization header does not start with Bearer', () => {
+  it('should throw when x-refresh-token header is an empty array', () => {
     const ctx = createMockContext({
-      authorization: 'Basic abcdef',
+      'x-refresh-token': ['', ''],
     });
 
-    const call = () => extractAccessToken(ctx);
+    const call = () => extractRefreshTokenFromContext(ctx);
 
     expect(call).toThrow(UnauthorizedException);
-    expect(call).toThrow('Missing or invalid Authorization header');
+    expect(call).toThrow('Missing refresh token');
   });
 });

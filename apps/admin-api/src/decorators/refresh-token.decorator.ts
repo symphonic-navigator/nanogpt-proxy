@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 
-export const RefreshToken = createParamDecorator((data: unknown, ctx: ExecutionContext): string => {
+export function extractRefreshTokenFromContext(ctx: ExecutionContext): string {
   const req = ctx.switchToHttp().getRequest<Request>();
 
   const headerValue: string | string[] | undefined = req.headers['x-refresh-token'];
@@ -18,6 +18,9 @@ export const RefreshToken = createParamDecorator((data: unknown, ctx: ExecutionC
     return first;
   }
 
-  // Ici, c’est forcément un string
   return headerValue;
-});
+}
+
+export const RefreshToken = createParamDecorator((_data: unknown, ctx: ExecutionContext): string =>
+  extractRefreshTokenFromContext(ctx),
+);
