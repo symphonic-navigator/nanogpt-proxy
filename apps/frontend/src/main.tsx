@@ -11,7 +11,7 @@ import './index.scss';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <MantineProvider>
+      <MantineProvider defaultColorScheme="dark">
         <BrowserRouter>
           <App />
         </BrowserRouter>

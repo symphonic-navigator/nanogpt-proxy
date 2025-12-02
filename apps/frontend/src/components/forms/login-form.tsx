@@ -1,9 +1,8 @@
 import {
-  Anchor,
+  Alert,
+  Box,
   Button,
-  Checkbox,
   Container,
-  Group,
   Paper,
   PasswordInput,
   Text,
@@ -11,30 +10,91 @@ import {
   Title,
 } from '@mantine/core';
 import classes from './login-form.module.scss';
+import { useLogin } from '../../hooks/useLogin.ts';
+import { useForm } from '@mantine/form';
+import type { LoginRequestDto } from '../../dtos/login-request.dto.ts';
+import { IconAlertCircle } from '@tabler/icons-react';
+import { setAuthCookies } from '../../utilities/cookies-utilities.ts';
+import options from 'axios';
 
 function LoginForm() {
+  const {
+    mutate: login,
+    isPending,
+    error,
+  } = useLogin({
+    onSuccess: (data) => {
+      setAuthCookies({
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+      });
+      options?.onSuccess?.(data);
+    },
+    onError: options?.onError,
+  });
+
+  const form = useForm<LoginRequestDto>({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validate: {
+      email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : 'Please enter a valid email address',
+      password: (value) =>
+        value.trim().length >= 6 ? null : 'Password must be at least 6 characters',
+    },
+  });
+
+  const handleSubmit = (values: LoginRequestDto) => {
+    login({
+      email: values.email,
+      password: values.password,
+    });
+  };
+
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
         Welcome back!
       </Title>
 
-      <Text className={classes.subtitle}>
-        Do not have an account yet? <Anchor>Create account</Anchor>
-      </Text>
+      <Text className={classes.subtitle}>NanoGPT Proxy version 0.0.1</Text>
 
       <Paper withBorder shadow="sm" p={22} mt={30} radius="md">
-        <TextInput label="Email" placeholder="you@mantine.dev" required radius="md" />
-        <PasswordInput label="Password" placeholder="Your password" required mt="md" radius="md" />
-        <Group justify="space-between" mt="lg">
-          <Checkbox label="Remember me" />
-          <Anchor component="button" size="sm">
-            Forgot password?
-          </Anchor>
-        </Group>
-        <Button fullWidth mt="xl" radius="md">
-          Sign in
-        </Button>
+        <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
+          <TextInput
+            withAsterisk
+            label="Email"
+            data-test-id="input-email"
+            data-cy="input-email"
+            placeholder="email@domain.com"
+            radius="md"
+            mt="xs"
+            {...form.getInputProps('email')}
+          />
+
+          <PasswordInput
+            withAsterisk
+            label="Password"
+            data-test-id="input-password"
+            data-cy="input-password"
+            placeholder="Password"
+            radius="md"
+            mt="md"
+            {...form.getInputProps('password')}
+          />
+
+          {error && (
+            <Alert mt="md" color="red" variant="light" icon={<IconAlertCircle size={16} />}>
+              {error instanceof Error ? error.message : 'Login failed, please try again.'}
+            </Alert>
+          )}
+
+          <Button fullWidth mt="xl" radius="md" type="submit" loading={isPending}>
+            Sign in
+          </Button>
+        </Box>
       </Paper>
     </Container>
   );
