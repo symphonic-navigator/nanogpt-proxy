@@ -39,6 +39,7 @@ function LoginForm() {
     },
   });
 
+  /* TODO: We should use Yup - https://mantine.dev/form/schema-validation/#yup */
   const form = useForm<LoginRequestDto>({
     initialValues: {
       email: '',
