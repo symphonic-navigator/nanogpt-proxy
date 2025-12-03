@@ -8,7 +8,7 @@ import {
   getRefreshToken,
   setAuthCookies,
 } from '../utilities/cookies.utilities.ts';
-import { isJwtExpired } from '../utilities/jwt-utilities.ts';
+import { isJwtExpired } from '../utilities/jwt.utilities.ts';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
 
