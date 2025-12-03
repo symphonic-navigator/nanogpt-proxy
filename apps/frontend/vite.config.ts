@@ -27,6 +27,8 @@ export default defineConfig({
         '__mocks__/**',
         '**/*config*.ts',
         '**/**/*.css',
+        '**/**/*.scss',
+        '**/**/*.json',
       ],
     },
   },

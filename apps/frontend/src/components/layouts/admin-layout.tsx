@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router';
 import { AppShell, Container } from '@mantine/core';
 import TopHeader from '../elements/headers/top-header.tsx';
+import Navbar from '../navigation/nav-bar.tsx';
 
 function AdminLayout() {
   return (
@@ -8,9 +9,11 @@ function AdminLayout() {
       <AppShell.Header>
         <TopHeader />
       </AppShell.Header>
-
+      <AppShell.Navbar>
+        <Navbar />
+      </AppShell.Navbar>
       <AppShell.Main>
-        <Container size="md">
+        <Container size="sm">
           <Outlet />
         </Container>
       </AppShell.Main>
