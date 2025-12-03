@@ -16,9 +16,11 @@ import type { LoginRequestDto } from '../../dtos/login-request.dto.ts';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { setAuthCookies } from '../../utilities/cookies.utilities.ts';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const {
     mutate: login,
@@ -43,10 +45,8 @@ function LoginForm() {
       password: '',
     },
     validate: {
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : 'Please enter a valid email address',
-      password: (value) =>
-        value.trim().length >= 6 ? null : 'Password must be at least 6 characters',
+      email: (value) => (/^\S+@\S+\.\S+$/.test(value) ? null : t('input.email.errors.format')),
+      password: (value) => (value.trim().length >= 6 ? null : t('input.password.errors.min')),
     },
   });
 
@@ -60,7 +60,7 @@ function LoginForm() {
   return (
     <Container size={420} my={40}>
       <Title ta="center" className={classes.title}>
-        Welcome back!
+        {t('login.title')}
       </Title>
 
       <Text className={classes.subtitle}>NanoGPT Proxy version 0.0.1</Text>
@@ -69,10 +69,10 @@ function LoginForm() {
         <Box component="form" onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             withAsterisk
-            label="Email"
+            label={t('input.email.label')}
             data-test-id="input-email"
             data-cy="input-email"
-            placeholder="email@domain.com"
+            placeholder={t('input.email.placeholder')}
             radius="md"
             mt="xs"
             {...form.getInputProps('email')}
@@ -80,10 +80,10 @@ function LoginForm() {
 
           <PasswordInput
             withAsterisk
-            label="Password"
+            label={t('input.password.label')}
             data-test-id="input-password"
             data-cy="input-password"
-            placeholder="Password"
+            placeholder={t('input.password.placeholder')}
             radius="md"
             mt="md"
             {...form.getInputProps('password')}
@@ -96,7 +96,7 @@ function LoginForm() {
           )}
 
           <Button fullWidth mt="xl" radius="md" type="submit" loading={isPending}>
-            Sign in
+            {t('button.login.label')}
           </Button>
         </Box>
       </Paper>
