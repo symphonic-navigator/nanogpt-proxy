@@ -20,13 +20,17 @@ async function loginRequest(payload: LoginRequestDto): Promise<LoginResponseDto>
 
 type UseLoginOptions = {
   onSuccess?: (data: LoginResponseDto) => void;
-  onError?: (error: unknown) => void;
+  onError?: (error: Error) => void;
 };
 
 export function useLogin(options?: UseLoginOptions) {
-  return useMutation<LoginResponseDto, unknown, LoginRequestDto>({
+  return useMutation<LoginResponseDto, Error, LoginRequestDto>({
     mutationFn: loginRequest,
-    onSuccess: options?.onSuccess,
-    onError: options?.onError,
+    onSuccess: (data) => {
+      options?.onSuccess?.(data);
+    },
+    onError: (error) => {
+      options?.onError?.(error);
+    },
   });
 }

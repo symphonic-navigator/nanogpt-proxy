@@ -2,7 +2,7 @@ import { Outlet } from 'react-router';
 import { AppShell, Container } from '@mantine/core';
 import TopHeader from '../elements/headers/top-header.tsx';
 
-function BaseLayout() {
+function LoginLayout() {
   return (
     <AppShell padding="md" header={{ height: 60 }}>
       <AppShell.Header>
@@ -18,4 +18,4 @@ function BaseLayout() {
   );
 }
 
-export default BaseLayout;
+export default LoginLayout;

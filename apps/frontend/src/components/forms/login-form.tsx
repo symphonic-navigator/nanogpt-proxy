@@ -14,10 +14,12 @@ import { useLogin } from '../../hooks/useLogin.ts';
 import { useForm } from '@mantine/form';
 import type { LoginRequestDto } from '../../dtos/login-request.dto.ts';
 import { IconAlertCircle } from '@tabler/icons-react';
-import { setAuthCookies } from '../../utilities/cookies-utilities.ts';
-import options from 'axios';
+import { setAuthCookies } from '../../utilities/cookies.utilities.ts';
+import { useNavigate } from 'react-router';
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const {
     mutate: login,
     isPending,
@@ -28,9 +30,11 @@ function LoginForm() {
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
       });
-      options?.onSuccess?.(data);
+      navigate('/admin', { replace: true });
     },
-    onError: options?.onError,
+    onError: (err) => {
+      console.error('Login failed', err);
+    },
   });
 
   const form = useForm<LoginRequestDto>({
@@ -85,9 +89,9 @@ function LoginForm() {
             {...form.getInputProps('password')}
           />
 
-          {error && (
+          {!!error && (
             <Alert mt="md" color="red" variant="light" icon={<IconAlertCircle size={16} />}>
-              {error instanceof Error ? error.message : 'Login failed, please try again.'}
+              {error?.message}
             </Alert>
           )}
 
