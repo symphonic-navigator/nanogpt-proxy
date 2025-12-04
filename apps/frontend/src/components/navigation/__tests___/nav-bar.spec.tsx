@@ -18,6 +18,8 @@ vi.mock('react-router', async () => {
 const mockedUseLogout = useLogout as unknown as MockedFunction<typeof useLogout>;
 const mockedUseNavigate = useNavigate as unknown as MockedFunction<typeof useNavigate>;
 
+type UseLogoutResult = ReturnType<typeof useLogout>;
+
 describe('<NavBar />', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -74,7 +76,7 @@ describe('<NavBar />', () => {
       mutate: logoutMutateMock,
       isPending: false,
       error: null,
-    } as any);
+    } as Partial<UseLogoutResult> as UseLogoutResult);
 
     /* Act */
     renderWithProviders(<NavBar />);

@@ -9,6 +9,8 @@ vi.mock('../../../hooks/useLogin.ts');
 
 const mockedUseLogin = useLogin as unknown as MockedFunction<typeof useLogin>;
 
+type UseLoginResult = ReturnType<typeof useLogin>;
+
 describe('<LoginForm />', () => {
   beforeEach(async () => {
     await i18nTest.changeLanguage('en');
@@ -51,7 +53,7 @@ describe('<LoginForm />', () => {
       mutate: mutateMock,
       isPending: false,
       error: null,
-    } as any);
+    } as Partial<UseLoginResult> as UseLoginResult);
 
     /* Act */
     renderWithProviders(<LoginForm />);

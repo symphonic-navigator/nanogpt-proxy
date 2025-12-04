@@ -58,7 +58,7 @@ export function AuthGuard() {
         });
 
         setStatus('authorized');
-      } catch (err) {
+      } catch {
         if (cancelled) return;
         clearAuthCookies();
         setStatus('unauthorized');

@@ -50,7 +50,7 @@ function setCookie(name: string, value: string, options: CookieOptions = {}) {
     secure = !isLocalhost && isHttps;
   }
 
-  let sameSite: SameSite = options.sameSite ?? 'lax';
+  const sameSite: SameSite = options.sameSite ?? 'lax';
 
   if (sameSite === 'none' && !secure) {
     secure = true;
