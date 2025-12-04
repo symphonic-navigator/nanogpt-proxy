@@ -7,7 +7,10 @@ import { renderWithProviders } from '../../__tests__/utilities/test.utilities.ts
 vi.mock('axios');
 const mockedAxiosPost = axios.post as unknown as Mock;
 
-function TestComponent(props: { onSuccess?: (data: any) => void; onError?: (err: Error) => void }) {
+function TestComponent(props: {
+  onSuccess?: (data: unknown) => void;
+  onError?: (err: Error) => void;
+}) {
   const { onSuccess, onError } = props;
   const { mutate } = useLogin({ onSuccess, onError });
 

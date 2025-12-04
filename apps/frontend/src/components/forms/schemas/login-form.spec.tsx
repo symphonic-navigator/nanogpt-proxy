@@ -19,7 +19,7 @@ describe('<LoginForm />', () => {
       mutate: vi.fn(),
       isPending: false,
       error: null,
-    } as any);
+    } as Partial<UseLoginResult> as UseLoginResult);
   });
 
   it('renders', () => {
@@ -83,7 +83,7 @@ describe('<LoginForm />', () => {
       mutate: vi.fn(),
       isPending: false,
       error,
-    } as any);
+    } as Partial<UseLoginResult> as UseLoginResult);
 
     /* Act */
     renderWithProviders(<LoginForm />);

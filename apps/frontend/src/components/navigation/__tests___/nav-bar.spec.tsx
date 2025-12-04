@@ -31,7 +31,7 @@ describe('<NavBar />', () => {
       mutate: vi.fn(),
       isPending: false,
       error: null,
-    } as any);
+    } as Partial<UseLogoutResult> as UseLogoutResult);
   });
 
   it('renders version and navigation links', () => {
