@@ -56,3 +56,5 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/nanogpt-${{ matrix.service.name }}:latest
             ${{ env.REGISTRY }}/${{ github.repository_owner }}/nanogpt-${{ matrix.service.name }}:${{ github.sha }}
+            ${{ github.ref_type == 'tag' && format('{0}/{1}/nanogpt-{2}:{3}', env.REGISTRY, github.repository_owner, matrix.service.name, github.ref_name) || '' }}
+      
