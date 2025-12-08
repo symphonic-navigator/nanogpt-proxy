@@ -34,5 +34,14 @@ services:
     ports:
       - "3000:3000"
 
+  frontend:
+    image: nanogpt-frontend
+    container_name: nanogpt-frontend
+    depends_on:
+      - admin-api
+      - proxy
+    ports:
+      - "5173:80"
+
 volumes:
   redis-data:

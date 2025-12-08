@@ -219,9 +219,9 @@ pnpm test
 Each app/package also exposes its own scripts (e.g. build, lint, format, test)
 that you can run via pnpm --filter <name> <script>.
 
-# ⚙️ Deploy on Docker
+# 🐋 Deploy on Docker
 
-## Build images
+## Build Docker images
 
 ### admin-api
 
@@ -235,6 +235,11 @@ docker build -f apps/admin-api/Dockerfile -t nanogpt-admin-api .
 docker build -f apps/proxy/Dockerfile -t nanogpt-proxy .
 ```
 
+### frontend
+
+```bash
+docker build -f apps/frontend/Dockerfile -t nanogpt-frontend .
+```
 
 ## Run images
 
@@ -248,6 +253,12 @@ docker run --rm -p 3001:3001 -e REDIS_URL=redis://host.docker.internal:6379 nano
 
 ```bash
 docker run --rm -p 3000:3000 -e REDIS_URL=redis://host.docker.internal:6379 nanogpt-proxy
+```
+
+### frontend
+
+```bash
+docker run --rm -p 5173:80 nanogpt-frontend
 ```
 
 # 👩‍💻👨‍💻 Developers
