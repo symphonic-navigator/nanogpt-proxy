@@ -51,6 +51,10 @@ export class EnvironmentService {
     return this.getRequired<string>('JWT_SECRET');
   }
 
+  get adminPort(): number {
+    return this.getOptional<number>('ADMIN_PORT', 3001);
+  }
+
   get proxyPort(): number {
     return this.getOptional<number>('PROXY_PORT', 3000);
   }

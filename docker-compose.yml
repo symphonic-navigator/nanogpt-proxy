@@ -14,5 +14,15 @@ services:
       - DB_ENCRYPTION_KEY=${DB_ENCRYPTION_KEY}
     restart: unless-stopped
 
+  admin-api:
+    image: nanogpt-admin-api
+    container_name: nanogpt-admin-api
+    depends_on:
+      - redis
+    environment:
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "3001:3001"
+
 volumes:
   redis-data:

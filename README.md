@@ -21,7 +21,6 @@ Ideal if you want to host a single OpenWebUI for a small team, but keep each per
 ### Backend
 
 - **NestJS** (REST APIs, auth, user & key management)
-- ~~**SQLite** (lightweight data store for users + API keys)~~
 - **Redis** (data store for users + API keys)
 
 ### Frontend
@@ -43,7 +42,7 @@ Ideal if you want to host a single OpenWebUI for a small team, but keep each per
 ### Backend
 
 - **NestJS** (REST APIs, auth, user & key management)
-- **SQLite** (lightweight data store for users + API keys)
+- **Redis** (lightweight data store for users + API keys)
 
 ### Frontend
 
@@ -219,6 +218,18 @@ pnpm test
 
 Each app/package also exposes its own scripts (e.g. build, lint, format, test)
 that you can run via pnpm --filter <name> <script>.
+
+# ⚙️ Deploy on Docker
+
+## Build images
+
+## Run images
+
+### admin-api
+
+```bash
+docker run --rm -p 3001:3001 -e REDIS_URL=redis://host.docker.internal:6379 nanogpt-admin-api
+```
 
 # 👩‍💻👨‍💻 Developers
 

@@ -13,7 +13,7 @@ export async function bootstrap(): Promise<void> {
   });
 
   const environmentService = app.get(EnvironmentService);
-  await app.listen(environmentService.proxyPort);
+  await app.listen(environmentService.adminPort);
 }
 
 if (process.env.NODE_ENV !== 'test') {
